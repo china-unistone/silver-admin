@@ -53,8 +53,8 @@
 </template>
 
 <script>
-// import axios from 'axios'
-// import API from './api/api'
+import axios from 'axios'
+import API from '../api/api'
 // import router from './router'
 
 import '../assets/css/app.less'
@@ -111,11 +111,19 @@ export default {
   },
   methods: {
     checkLogin() {
-      const loginUserId = this.$store.getters.loginUserId
+      let loginUserId = this.$store.getters.loginUserId
       if (!loginUserId || !loginUserId) {
-        this.$router.push({
-          name: 'login'
-        })
+        // 从缓存获取loginUserId
+        loginUserId = localStorage.getItem('loginUserId')
+        if (!loginUserId || !loginUserId) {
+          this.$router.push({
+            name: 'login'
+          })
+        } else {
+          this.$store.dispatch('setLoginUserId', {
+            loginUserId
+          })
+        }
       }
     },
     hasRole(menu) {
@@ -234,18 +242,23 @@ export default {
     },
     loginOut() {
       // 退出登录
-      // axios.get(API.Logout)
-      //localStorage.removeItem('AdmInCookies')
-      this.$store.dispatch('setLoginUserId', {
-        loginUserId: ''
+      axios.get(API.Logout).then(() => {
+        //localStorage.removeItem('AdmInCookies')
+        this.$store.dispatch('setLoginUserId', {
+          loginUserId: ''
+        })
+        localStorage.removeItem('loginUserId')
+        this.$message({
+          'message': '您已安全退出登录',
+          'type': 'success'
+        })
+        this.$router.push({
+          name: 'login'
+        })
+      }).catch(error => {
+        console.log('登出异常', error)
       })
-      this.$message({
-        'message': '您已安全退出登录',
-        'type': 'success'
-      })
-      this.$router.push({
-        name: 'Login'
-      })
+
     }
   }
 }

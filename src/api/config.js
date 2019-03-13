@@ -11,6 +11,7 @@ axios.defaults.timeout = 30000
 axios.defaults.baseURL = development? 'http://47.99.200.198/admin' : '/admin'
 
 axios.defaults.responseType = 'json'
+axios.defaults.withCredentials=true
 
 let loadingInstance = null;
 
@@ -29,7 +30,7 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
     // 对响应数据做点什么
     loadingInstance.close();
-    console.log("======config response info: ", response)
+    // console.log("======config response info: ", response)
     //返回数据判断
     if(!response || !response.data) {
         Message.error('服务器异常')
@@ -44,12 +45,12 @@ axios.interceptors.response.use(function (response) {
     // 对响应错误做点什么
     loadingInstance.close();
 
-    console.log("======config response error: ", err)
+    // console.log("======config response error: ", err)
 
     if (err.response.status === 401 ||
         err.response.status === 403) {
         //Message.error('服务器异常')
-        router.push({name: 'Login'})
+        router.push({name: 'login'})
     }
 
     return Promise.reject(err);

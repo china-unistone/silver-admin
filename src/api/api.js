@@ -11,6 +11,18 @@ const API = {
     AdminUserInsert:'/user/insert',
     AdminUserUpdate:'/user/update',
     AdminUserDelete:'/user/delete',
+    WithdrawPageList: '/withdraw/pageList',
+    WithdrawConfirm: '/withdraw/confirm',
+    WithdrawClose: '/withdraw/close',
+    WithdrawImport: '/withdraw/import',
+    ScenicLevelInsert: '/sceniclevel/insert',
+    ScenicLevelUpdate: '/sceniclevel/update',
+    ScenicLevelDelete: '/sceniclevel/delete',
+    ScenicLevelPageList: '/sceniclevel/pageList',
+    ScenicSpotInsert: '/scenicspot/insert',
+    ScenicSpotUpdate: '/scenicspot/update',
+    ScenicSpotDelete: '/scenicspot/delete',
+    ScenicSpotPageList: '/scenicspot/pageList',
 }
 
 export default API
