@@ -1,6 +1,6 @@
 <template>
-    <div class="admin-user-list">
-        <div v-if="listMode">
+    <div class="section-tab">
+        <el-row v-if="listMode">
             <el-row>
                 <el-col :span="4">
                     <el-tooltip placement="right" content="刷新">
@@ -11,31 +11,32 @@
                     <el-button type="primary" icon="el-icon-circle-plus-outline" @click="addNewArticle">新增广告</el-button>
                 </el-col>
             </el-row>
-            <el-row class="table-div">
-                <el-table :data="tableData" border style="width: 100%">
-                    <el-table-column prop="sort" label="排序">
-                    </el-table-column>
-                    <el-table-column prop="coverImg" label="封面图">
-                    </el-table-column>
-                    <el-table-column prop="gmtModified" label="修改时间">
-                    </el-table-column>
-                    <el-table-column fixed="right" label="操作" width="100">
-                        <template slot-scope="scope">
-                            <el-button @click="deleteRow(scope.row.id)" type="text" size="small">删除</el-button>
-                            <el-button @click="updateRow(scope.row)" type="text" size="small">编辑</el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <el-pagination class="pagination" layout="prev, pager, next" :page-count="totalPage" background @current-change="currentPageChanged">
-                </el-pagination>
-            </el-row>
-        </div>
+            <el-table :data="tableData" border style="width: 100%;margin-top: 20px;">
+                <el-table-column prop="sort" label="排列序号">
+                </el-table-column>
+                <el-table-column prop="coverImg" label="封面图">
+                    <template slot-scope="scope">
+                        <img :src="scope.row.coverImgPath" class="cover-img"/>
+                    </template>
+                </el-table-column>
+                <el-table-column prop="gmtModified" label="修改时间">
+                </el-table-column>
+                <el-table-column fixed="right" label="操作" width="100">
+                    <template slot-scope="scope">
+                        <el-button @click="deleteRow(scope.row.id)" type="text" size="small">删除</el-button>
+                        <el-button @click="updateRow(scope.row)" type="text" size="small">编辑</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <el-pagination class="pagination" layout="prev, pager, next" :page-count="totalPage" background @current-change="currentPageChanged">
+            </el-pagination>
+        </el-row>
         <div v-if="!listMode">
             <el-row>
                 <el-col :span="12">
-                    <el-form ref="articleForm" :model="formData" :rules="formRule" label-width="100px" :key="'form' + isAdd">
-                        <el-form-item label="排序:" prop="sort">
-                            <el-input v-model="formData.sort" placeHolder="请输入排序"></el-input>
+                    <el-form ref="articleForm" :model="formData" :rules="formRule" label-width="150px">
+                        <el-form-item label="排列序号:" prop="sort">
+                            <el-input v-model.number="formData.sort" placeHolder="请输入排列序号"></el-input>
                         </el-form-item>
                         <el-form-item label="封面图片">
                             <el-upload accept=".jpg, .png" ref="cover_img" class="avatar-uploader" :action="ossHost" :data="ossFormData" :show-file-list="false" :on-change="changeCoverImgUpload" :on-remove="removeCoverImgUpload" :on-success="successCoverImgUpload" :before-upload="beforeCoverImgUpload">
@@ -49,10 +50,10 @@
                                 <el-radio :label="1">链接地址</el-radio>
                             </el-radio-group>
                         </el-form-item>
-                        <el-form-item v-if="formData.linkType == 0" label="商品itemId:" prop="itemId">
+                        <el-form-item v-if="formData.linkType == 0" label="商品itemId:" prop="itemId" key="item-itemId">
                             <el-input v-model="formData.itemId" placeHolder="请输入商品itemId"></el-input>
                         </el-form-item>
-                        <el-form-item v-if="formData.linkType == 1" label="链接地址:" prop="linkUrl">
+                        <el-form-item v-if="formData.linkType == 1" label="链接地址:" prop="linkUrl" key="item-linkUrl">
                             <el-input v-model="formData.linkUrl" placeHolder="请输入链接地址"></el-input>
                         </el-form-item>
                         <el-form-item label="创建时间:" prop="gmtCreate">
@@ -72,7 +73,7 @@
     </div>
 </template>
 <script>
-import '../assets/css/admin-user-list.less'
+import "../assets/css/section.less"
 import axios from 'axios'
 import API from '../api/api.js'
 
@@ -84,28 +85,15 @@ export default {
       totalPage: 1,
       listMode: true,
       isAdd: true,
-      formData: {},
+      formData: {
+        linkType: 0
+      },
       formRule: {
-        sort: [{
-          required: true,
-          message: '请输入排序',
-          trigger: 'blur'
-        }],
-        linkType: [{
-          required: true,
-          message: '请输入链接类型',
-          trigger: 'blur'
-        }],
-        itemId: [{
-          required: true,
-          message: '请输入商品itemId',
-          trigger: 'blur'
-        }],
-        linkUrl: [{
-          required: true,
-          message: '请输入链接地址',
-          trigger: 'blur'
-        }]
+        sort: [{ required: true, message: '请输入排列序号', trigger: 'blur' },
+           { type: 'number', message: '排列序号必须为数字值', trigger: 'blur' }],
+        linkType: [{ required: true, message: '请输入链接类型', trigger: 'blur' }],
+        itemId: [{ required: true, message: '请输入商品itemId', trigger: 'blur' }],
+        linkUrl: [{ required: true, message: '请输入链接地址', trigger: 'blur' }]
       },
       cover_img: '', // 表单中的首页大图url地址
       //oss data
@@ -143,7 +131,12 @@ export default {
         if (res.status !== 0) {
           this.$message.error('获取广告列表失败')
         } else {
-          this.tableData = res.data.list
+          // 转换imgPath
+          var list = res.data.list || []
+          for (var i = 0; i < list.length; i++) {
+            list[i].coverImgPath = this.getPictureFullPath(list[i].coverImg)
+          }
+          this.tableData = list
           this.totalPage = res.data.totalPage
         }
       }).catch(() => this.$message.error('获取广告列表失败'))
@@ -191,28 +184,32 @@ export default {
     },
     updateRow(row) {
       this.formData = JSON.parse(JSON.stringify(row))
+      this.formData.linkType = this.formData.linkType || 0
       this.cover_img = this.getPictureFullPath(this.formData.coverImg)
       this.isAdd = false
       this.listMode = false
     },
     addNewArticle() {
       // 重置所有的formData
-      this.formData = {}
-      this.formData.linkType = 0
+      this.formData = {
+        linkType: 0
+      }
       this.cover_img = ''
       this.isAdd = true
       this.listMode = false
     },
     clickOnSubmit() {
-      this.$refs.articleForm.validate().then(() => {
+      this.$refs.articleForm.validate((valid) => {
+        if (!valid) {
+          return
+        }
         // 获取图片
         if (!this.cover_img) {
           this.$message({ type: "error", message: "请先上传封面图片" });
           return false;
         }
-        this.formData.coverImg = this.getFileNameFromFullPath(this.cover_img)
+        this.formData.coverImg = this.cover_img  // this.getFileNameFromFullPath(this.cover_img)
         console.log(this.formData)
-
         let api = this.isAdd ? API.AdminUserInsert : API.AdminUserUpdate
         axios.post(api, this.formData).then(res => {
           console.log(res)
@@ -224,7 +221,7 @@ export default {
             this.listMode = true
           }
         }).catch(err => console.log(err))
-      }).catch(err => console.log(err))
+      })
     },
     changeCoverImgUpload(file, fileList) {
       console.log(file);
@@ -250,17 +247,23 @@ export default {
       this.ossFormData.OSSAccessKeyId = this.accessid
       this.ossFormData.policy = this.policy
       this.ossFormData.Signature = this.signature
-      this.ossFormData.key = this.ossDir + "advertise" + "/" + file.name
+      this.ossFormData.key = this.ossDir + "homeArticle" + "/" + file.name
     },
     // 获取图片完整路径
     getPictureFullPath(fileName) {
+      if (!fileName) {
+        return fileName
+      }
       if (fileName.toLowerCase().startsWith('http://') || fileName.toLowerCase().startsWith('https://')) {
         return fileName
       }
-      return this.ossHost + '/' + this.ossDir + "advertise" + "/" + fileName
+      return this.ossHost + '/' + this.ossDir + "homeArticle" + "/" + fileName
     },
     // 获取图片名
     getFileNameFromFullPath(fullPath) {
+      if (!fullPath) {
+        return fullPath
+      }
       if (!fullPath.toLowerCase().startsWith('http://') && !fullPath.toLowerCase().startsWith('https://')) {
         return fullPath
       }
@@ -272,3 +275,8 @@ export default {
   }
 }
 </script>
+<style rel="stylesheet/scss" lang="scss" scoped>
+.el-radio {
+    line-height: 40px;
+}
+</style>
