@@ -23,6 +23,10 @@ const API = {
     ScenicSpotUpdate: '/scenicspot/update',
     ScenicSpotDelete: '/scenicspot/delete',
     ScenicSpotPageList: '/scenicspot/pageList',
+    HomeArticlePageList: 'homeArticle/pageList',
+    HomeArticleInsert: 'homeArticle/insert',
+    HomeArticleUpdate: 'homeArticle/update',
+    HomeArticleDelete: 'homeArticle/delete',
 }
 
 export default API

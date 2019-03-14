@@ -269,27 +269,27 @@
                 this.ossFormData.key = this.ossDir + "area_title" + this.moduleIndex +"/" + file.name
             },
             saveEdit() {
-                this.$refs.form.validate().then(() => {
-                    let content = this.$refs.ueditor.getUEContent();
-                    let title = this.form.title;
-                    let sort = this.form.sort;
-                    if(!this.cover_img){
+                let _this = this;
+                _this.$refs.form.validate().then(() => {
+                    let content = _this.$refs.ueditor.getUEContent();
+                    let title = _this.form.title;
+                    let sort = _this.form.sort;
+                    if(!_this.cover_img){
                         _this.$message({type: "error", message: "请先上传封面图片"});
                         return false;
                     }
                     let data = {
-                        id: parseInt(this.form.id),
-                        title: this.form.title,
-                        sort: parseInt(this.form.sort),
-                        phrase: this.form.phrase,
-                        repost: this.form.repost || 0,
-                        praise: this.form.praise || 0,
+                        id: parseInt(_this.form.id),
+                        title: _this.form.title,
+                        sort: parseInt(_this.form.sort),
+                        phrase: _this.form.phrase,
+                        repost: _this.form.repost || 0,
+                        praise: _this.form.praise || 0,
                         content: content,
-                        coverImg: this.cover_img,
-                        module: this.moduleIndex,
-                        section: this.sectionIndex
+                        coverImg: _this.cover_img,
+                        module: _this.moduleIndex,
+                        section: _this.sectionIndex
                     };
-                    let _this = this;
                     let apiUrl = (data.id) ? API.EditUpdateData : API.EditInsertData;
                     axios.post(apiUrl, data)
                         .then(function (response) {

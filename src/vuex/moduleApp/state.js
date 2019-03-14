@@ -17,6 +17,18 @@ const state = {
     //   }]
     // }, 
     {
+      name: 'HomeSetting',
+      icon: 'el-icon-tickets',
+      title: '首页设置',
+      role: 'SUPPER_ADMIN',
+      subItems:[
+          {
+              name: 'HomeArticle',
+              title: '首页广告'
+          }
+      ]
+    },
+    {
       name: 'Area',
       icon: 'el-icon-tickets',
       title: '细银专区',
