@@ -50,10 +50,10 @@
                                 <el-radio :label="1">链接地址</el-radio>
                             </el-radio-group>
                         </el-form-item>
-                        <el-form-item v-if="formData.linkType == 0" label="商品itemId:" prop="itemId" key="item-itemId">
-                            <el-input v-model="formData.itemId" placeHolder="请输入商品itemId"></el-input>
+                        <el-form-item label="商品itemId:" prop="itemId" key="item-itemId">
+                            <el-input v-model.number="formData.itemId" placeHolder="请输入商品itemId"></el-input>
                         </el-form-item>
-                        <el-form-item v-if="formData.linkType == 1" label="链接地址:" prop="linkUrl" key="item-linkUrl">
+                        <el-form-item label="链接地址:" prop="linkUrl" key="item-linkUrl">
                             <el-input v-model="formData.linkUrl" placeHolder="请输入链接地址"></el-input>
                         </el-form-item>
                         <el-form-item label="创建时间:" prop="gmtCreate">
@@ -92,7 +92,8 @@ export default {
         sort: [{ required: true, message: '请输入排列序号', trigger: 'blur' },
            { type: 'number', message: '排列序号必须为数字值', trigger: 'blur' }],
         linkType: [{ required: true, message: '请输入链接类型', trigger: 'blur' }],
-        itemId: [{ required: true, message: '请输入商品itemId', trigger: 'blur' }],
+        itemId: [{ required: true, message: '请输入商品itemId', trigger: 'blur' },
+           { type: 'number', message: '商品itemId必须为数字值', trigger: 'blur' }],
         linkUrl: [{ required: true, message: '请输入链接地址', trigger: 'blur' }]
       },
       cover_img: '', // 表单中的首页大图url地址
@@ -125,7 +126,7 @@ export default {
         pageNum: cp,
         pageSize: 20
       }
-      axios.get(API.AdminUserPageList, {
+      axios.get(API.HomeArticlePageList, {
         params
       }).then(res => {
         if (res.status !== 0) {
@@ -157,7 +158,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        axios.get(API.AdminUserDelete, {
+        axios.get(API.HomeArticleDelete, {
           params: {
             id: rId
           }
@@ -210,7 +211,11 @@ export default {
         }
         this.formData.coverImg = this.cover_img  // this.getFileNameFromFullPath(this.cover_img)
         console.log(this.formData)
-        let api = this.isAdd ? API.AdminUserInsert : API.AdminUserUpdate
+        this.formData.itemId = parseInt(this.formData.itemId)
+        if(this.formData.coverImgPath){
+          delete this.formData.coverImgPath
+        }
+        let api = this.isAdd ? API.HomeArticleInsert : API.HomeArticleUpdate
         axios.post(api, this.formData).then(res => {
           console.log(res)
           if (res.status !== 0) {
