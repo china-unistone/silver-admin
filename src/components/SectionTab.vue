@@ -41,8 +41,8 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
-                <el-form-item v-if="moduleIndex == 2" label="taobaoId" prop="taobaoId">
-                    <el-input v-model.number="form.taobaoId"></el-input>
+                <el-form-item v-if="moduleIndex == 2" label="ItemId" prop="dailyItemId">
+                    <el-input v-model.number="form.dailyItemId"></el-input>
                 </el-form-item>
                 <el-form-item v-if="moduleIndex == 3" label="图片列表" prop="sort">
                     <el-upload class="upload-demo" list-type="picture-card" :action="ossHost" :data="ossFormData" :limit="9" :file-list="imgList" :on-remove="removeImgListUpload" :on-success="successImgListUpload" :before-upload="beforeImgListUpload">
@@ -124,12 +124,12 @@ export default {
                 content: '',
                 repost: 0,
                 praise: 0,
-                taobaoId: null
+                dailyItemId: null
             },
             formRule: {
                 title: [{ required: true, message: '请输入文章标题', trigger: 'blur' }],
                 sort: [{ required: true, message: '请输入排列序号', trigger: 'blur' }, { type: 'number', message: '排列序号必须为数字值' }],
-                taobaoId: [{ type: 'number', message: 'itemId必须为数字值' }],
+                dailyItemId: [{ type: 'number', message: 'itemId必须为数字值' }],
                 repost: [{ required: true, message: '请输入转发数', trigger: 'blur' }, { type: 'number', message: '转发数必须为数字值' }],
                 praise: [{ required: true, message: '请输入点赞数', trigger: 'blur' }, { type: 'number', message: '点赞数必须为数字值' }],
             },
@@ -236,10 +236,10 @@ export default {
             this.form.content = row.content;
             this.config.initialContent = row.content;
 
-            this.form.taobaoId = row.taobaoId;
+            this.form.dailyItemId = row.dailyItemId;
             this.cover_img = row.coverImg;
-            this.form.pictureList = row.pictureList;
-            this.imgList = this.parseImgStrToFileArr(this.form.pictureList)
+            this.form.promoUrls = row.promoUrls;
+            this.imgList = this.parseImgStrToFileArr(this.form.promoUrls)
         },
         parseImgStrToFileArr(imgStr) {
             var fileArr = []
@@ -309,13 +309,11 @@ export default {
                     praise: _this.form.praise || 0,
                     content: content,
                     coverImg: _this.cover_img,
-                    pictureList: _this.parseFileArrToImgStr(_this.imgList),
-                    taobaoId: _this.form.taobaoId,
+                    promoUrls: _this.parseFileArrToImgStr(_this.imgList),
+                    dailyItemId: _this.form.dailyItemId,
                     module: _this.moduleIndex,
                     section: _this.sectionIndex
                 }
-                alert(JSON.stringify(data))
-                return
                 let apiUrl = (data.id) ? API.EditUpdateData : API.EditInsertData;
                 axios.post(apiUrl, data)
                     .then(function(response) {
