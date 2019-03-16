@@ -44,7 +44,7 @@
                 <el-form-item v-if="moduleIndex == 2" label="ItemId" prop="dailyItemId">
                     <el-input v-model.number="form.dailyItemId"></el-input>
                 </el-form-item>
-                <el-form-item v-if="moduleIndex == 3" label="图片列表" prop="sort">
+                <el-form-item v-if="moduleIndex == 3" label="图片列表">
                     <el-upload class="upload-demo" list-type="picture-card" :action="ossHost" :data="ossFormData" :limit="9" :file-list="imgList" :on-remove="removeImgListUpload" :on-success="successImgListUpload" :before-upload="beforeImgListUpload">
                         <el-button size="small" type="primary">点击上传</el-button>
                         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过2MB</div>
