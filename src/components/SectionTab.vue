@@ -129,7 +129,7 @@ export default {
             formRule: {
                 title: [{ required: true, message: '请输入文章标题', trigger: 'blur' }],
                 sort: [{ required: true, message: '请输入排列序号', trigger: 'blur' }, { type: 'number', message: '排列序号必须为数字值' }],
-                dailyItemId: [{ type: 'number', message: 'itemId必须为数字值' }],
+                dailyItemId: [{ required: true, message: '请输入ItemId', trigger: 'blur' }, { type: 'number', message: 'ItemId必须为数字值' }],
                 repost: [{ required: true, message: '请输入转发数', trigger: 'blur' }, { type: 'number', message: '转发数必须为数字值' }],
                 praise: [{ required: true, message: '请输入点赞数', trigger: 'blur' }, { type: 'number', message: '点赞数必须为数字值' }],
             },
