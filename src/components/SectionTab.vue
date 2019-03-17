@@ -236,7 +236,9 @@ export default {
             this.form.content = row.content;
             this.config.initialContent = row.content;
 
-            this.form.dailyItemId = row.dailyItemId;
+            if(row.dailyItemId){
+                this.form.dailyItemId = parseInt(row.dailyItemId) || 0
+            }
             this.cover_img = row.coverImg;
             this.form.promoUrls = row.promoUrls;
             this.imgList = this.parseImgStrToFileArr(this.form.promoUrls)
