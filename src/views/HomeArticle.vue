@@ -50,10 +50,10 @@
                                 <el-radio :label="1">链接地址</el-radio>
                             </el-radio-group>
                         </el-form-item>
-                        <el-form-item label="商品itemId:" prop="itemId" key="item-itemId">
+                        <el-form-item label="商品itemId:" prop="itemId">
                             <el-input v-model.number="formData.itemId" placeHolder="请输入商品itemId"></el-input>
                         </el-form-item>
-                        <el-form-item label="链接地址:" prop="linkUrl" key="item-linkUrl">
+                        <el-form-item label="链接地址:" prop="linkUrl">
                             <el-input v-model="formData.linkUrl" placeHolder="请输入链接地址"></el-input>
                         </el-form-item>
                         <el-form-item label="创建时间:" prop="gmtCreate">
@@ -186,6 +186,9 @@ export default {
     updateRow(row) {
       this.formData = JSON.parse(JSON.stringify(row))
       this.formData.linkType = this.formData.linkType || 0
+      if(this.formData.itemId){
+        this.formData.itemId = parseInt(this.formData.itemId) || 0
+      }
       this.cover_img = this.getPictureFullPath(this.formData.coverImg)
       this.isAdd = false
       this.listMode = false
