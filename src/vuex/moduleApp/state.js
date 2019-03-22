@@ -25,6 +25,14 @@ const state = {
           {
               name: 'HomeArticle',
               title: '首页广告'
+          },
+          {
+              name: 'AdvType',
+              title: '广告位类型'
+          },
+          {
+              name: 'AdvInfo',
+              title: '广告位'
           }
       ]
     },
@@ -110,7 +118,7 @@ const state = {
     }
   ],
   tabs: [],
-  tabComponents: ['Welcome', 'HomeArticle', 'Area', 'Arealife', 'Areahome', 'Circle', 'Bursting', 'Source', 'School', 'AdminUserList', 'WithdrawList', 'ScenicSpotList', 'ScenicLevel', 'ScenicStrategy']
+  tabComponents: ['Welcome', 'HomeArticle', 'AdvType', 'AdvInfo', 'Area', 'Arealife', 'Areahome', 'Circle', 'Bursting', 'Source', 'School', 'AdminUserList', 'WithdrawList', 'ScenicSpotList', 'ScenicLevel', 'ScenicStrategy']
 }
 
 export default state
