@@ -27,6 +27,14 @@ const API = {
     HomeArticleInsert: 'homeArticle/insert',
     HomeArticleUpdate: 'homeArticle/update',
     HomeArticleDelete: 'homeArticle/delete',
+    AdvTypePageList: 'advboardtype/pageList',
+    AdvTypeInsert: 'advboardtype/insert',
+    AdvTypeUpdate: 'advboardtype/update',
+    AdvTypeDelete: 'advboardtype/delete',
+    AdvInfoPageList: 'advboardinfo/pageList',
+    AdvInfoInsert: 'advboardinfo/insert',
+    AdvInfoUpdate: 'advboardinfo/update',
+    AdvInfoDelete: 'advboardinfo/delete'
 }
 
 export default API
