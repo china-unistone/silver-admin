@@ -25,6 +25,11 @@
             <el-table :data="advTypeList" border style="width: 100%;margin-top: 20px;text-align:center;">
                 <el-table-column prop="id" label="ID" width="80px">
                 </el-table-column>
+                <el-table-column label="类型" width="200">
+                    <template slot-scope="scope">
+                        <span>{{ scope.row.type | typeFilter }} </span>
+                    </template>
+                </el-table-column>
                 <el-table-column prop="title" label="标题">
                 </el-table-column>
                 <el-table-column label="默认logo图链接" width="200">
@@ -39,7 +44,7 @@
                 </el-table-column>
                 <el-table-column prop="gmtUpdate" label="修改时间" width="200">
                 </el-table-column>
-                <el-table-column fixed="right" label="操作" width="200">
+                <el-table-column label="操作" width="100">
                     <template slot-scope="scope">
                         <el-button v-if="false" @click="manageRow(scope.row.id)" type="text" size="small">管理广告位({{ scope.row.count || 0 }})</el-button>
                         <el-button @click="updateRow(scope.row)" type="text" size="small">编辑</el-button>
@@ -106,17 +111,20 @@ import "../assets/css/section.less"
 import axios from 'axios'
 import API from '../api/api.js'
 
+const typeList = [
+  { name: '首页icon', value: 1 },
+  { name: '品牌banner', value: 2 },
+  { name: '品牌分类', value: 3 },
+  { name: '热卖品牌', value: 4 }
+]
+
 export default {
   name: 'AdvTypeTab',
   data() {
     return {
       advTypeList: [], // 广告位类型列表
       totalPage: 1,   // 广告位类型总页数
-      typeList: [
-        { name: '首页icon', value: 1 },
-        { name: '品牌banner', value: 2 },
-        { name: '品牌icon', value: 3 }
-      ],
+      typeList: typeList,
       paramType:null,
       listMode: true,
       isAdd: true,
@@ -155,6 +163,16 @@ export default {
       this.ossHost = result.data.host
     });
   },
+  filters: {
+    typeFilter: function (value) {
+      for (var i=0;i< typeList.length;i++) {
+        if(value == typeList[i].value){
+          return typeList[i].name
+        }
+      }
+      return ''
+    }
+  },
   methods: {
     /* 列表页面 */
     fetchAdvTypeList(cp) {
@@ -183,6 +201,7 @@ export default {
       this.fetchAdvTypeList(1)
     },
     clickOnRefresh() {
+      this.paramType = null
       this.fetchAdvTypeList(1)
     },
     addNewAdvType() {
@@ -236,6 +255,7 @@ export default {
     
     /* 修改页面 */
     clickOnCancel() {
+      this.paramType = null
       this.listMode = true
     },
     clickOnSubmit() {
@@ -257,7 +277,7 @@ export default {
             this.$message.error('保存失败')
           } else {
             this.$message.success(res.msg)
-            this.fetchAdvTypeList(1)
+            this.clickOnRefresh()
             this.listMode = true
           }
         }).catch(err => console.log(err))
@@ -311,7 +331,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchAdvTypeList(1)
+    this.clickOnRefresh()
   }
 }
 </script>

@@ -23,13 +23,16 @@
                 </el-col>
             </el-row>
             <el-table :data="advInfoList" border style="width: 100%;margin-top: 20px;text-align:center;">
-                <el-table-column prop="id" label="ID" width="80px">
+                <el-table-column prop="id" label="ID" width="80">
                 </el-table-column>
-                <el-table-column prop="advBoardTypeId" label="广告位类型id" width="120px">
+                <el-table-column prop="advBoardTypeId" label="广告位类型" width="120">
+                  <template slot-scope="scope">
+                    <span>{{ advTypeRender(scope.row.advBoardTypeId) }}</span>
+                  </template>
                 </el-table-column>
-                <el-table-column prop="title" label="标题">
+                <el-table-column prop="title" label="标题" width="150">
                 </el-table-column>
-                <el-table-column label="logo" width="200px">
+                <el-table-column label="logo" width="150px">
                     <template slot-scope="scope">
                         <img :src="scope.row.logo" class="cover-img"/>
                     </template>
@@ -40,11 +43,13 @@
                     <span v-else>内部链接</span>
                   </template>
                 </el-table-column>
-                <el-table-column prop="sort" label="排序" width="80px">
+                <el-table-column prop="url" label="链接地址">
                 </el-table-column>
-                <el-table-column prop="gmtUpdate" label="修改时间" width="200">
+                <el-table-column prop="sort" label="排序" width="50">
                 </el-table-column>
-                <el-table-column fixed="right" label="操作" width="200">
+                <el-table-column prop="gmtUpdate" label="修改时间" width="100">
+                </el-table-column>
+                <el-table-column label="操作" width="100">
                     <template slot-scope="scope">
                         <el-button @click="updateRow(scope.row)" type="text" size="small">编辑</el-button>
                         <el-button @click="deleteRow(scope.row.id)" type="text" size="small">删除</el-button>
@@ -167,12 +172,21 @@ export default {
     });
   },
   methods: {
+    advTypeRender(value){
+      console.log('.......', value)
+      for (var i = 0; i < this.advTypeList.length; i++) {
+        if(this.advTypeList[i].id == value){
+          return this.advTypeList[i].title
+        }
+      }
+      return ''
+    },
     /* 列表页面 */
     fetchAdvInfoList(cp) {
       const params = {
         pageNum: cp,
         pageSize: 20,
-        advBoardTypeId: this.formData.advBoardTypeId
+        advBoardTypeId: this.paramAdvType
       }
       axios.get(API.AdvInfoPageList, {
         params
@@ -211,12 +225,15 @@ export default {
       this.fetchAdvInfoList(1)
     },
     clickOnRefresh() {
+      this.paramAdvType = null
+      this.fetchAdvTypeList()
       this.fetchAdvInfoList(1)
     },
     addNewAdvInfo() {
       // 重置所有的formData
       this.formData = {
-
+        openType: 2,
+        show: 1
       }
       this.cover_img = ''
       this.isAdd = true
@@ -263,6 +280,7 @@ export default {
     
     /* 修改页面 */
     clickOnCancel() {
+      this.paramAdvType = null
       this.listMode = true
     },
     clickOnSubmit() {
@@ -288,7 +306,7 @@ export default {
             this.$message.error('保存失败')
           } else {
             this.$message.success(res.msg)
-            this.fetchAdvInfoList(1)
+            this.clickOnRefresh()
             this.listMode = true
           }
         }).catch(err => console.log(err))
@@ -342,8 +360,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchAdvInfoList(1)
-    this.fetchAdvTypeList()
+    this.clickOnRefresh()
   }
 }
 </script>
