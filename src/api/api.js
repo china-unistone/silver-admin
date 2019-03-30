@@ -34,7 +34,11 @@ const API = {
     AdvInfoPageList: 'advboardinfo/pageList',
     AdvInfoInsert: 'advboardinfo/insert',
     AdvInfoUpdate: 'advboardinfo/update',
-    AdvInfoDelete: 'advboardinfo/delete'
+    AdvInfoDelete: 'advboardinfo/delete',
+    SysMsgPageList: 'sysmsg/pageList',
+    SysMsgInsert: 'sysmsg/insert',
+    SysMsgUpdate: 'sysmsg/update',
+    SysMsgDelete: 'sysmsg/delete'
 }
 
 export default API

@@ -8,7 +8,8 @@ const development = process.env.NODE_ENV
 // axios配置
 axios.defaults.timeout = 30000
 // local
-axios.defaults.baseURL = development? 'http://47.99.200.198/admin' : '/admin'
+// axios.defaults.baseURL = development? 'http://47.99.200.198/admin' : '/admin'
+axios.defaults.baseURL = '/admin'
 
 axios.defaults.responseType = 'json'
 axios.defaults.withCredentials=true

@@ -115,10 +115,27 @@ const state = {
         // icon: 'el-icon-check',
         title: '后台用户列表'
       }]
-    }
+    },
+      {
+          name: 'MessageSetting',
+          icon: 'el-icon-tickets',
+          title: '消息设置',
+          role: 'SUPPER_ADMIN',
+          subItems:[
+              {
+                  name: 'OfficialMsg',
+                  title: '官方公告'
+              },
+              {
+                  name: 'ActivityMsg',
+                  title: '活动公告'
+              }
+          ]
+      }
   ],
   tabs: [],
-  tabComponents: ['Welcome', 'HomeArticle', 'AdvType', 'AdvInfo', 'Area', 'Arealife', 'Areahome', 'Circle', 'Bursting', 'Source', 'School', 'AdminUserList', 'WithdrawList', 'ScenicSpotList', 'ScenicLevel', 'ScenicStrategy']
+  tabComponents: ['Welcome', 'HomeArticle', 'AdvType', 'AdvInfo', 'Area', 'Arealife', 'Areahome', 'Circle', 'Bursting', 'Source', 'School', 'AdminUserList', 'WithdrawList', 'ScenicSpotList', 'ScenicLevel', 'ScenicStrategy',
+  'OfficialMsg', 'ActivityMsg']
 }
 
 export default state
