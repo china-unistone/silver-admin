@@ -117,7 +117,8 @@ const typeList = [
   { name: '品牌分类', value: 3 },
   { name: '热卖品牌', value: 4 },
   { name: '京东首页icon', value: 5 },
-  { name: '拼多多首页icon', value: 6 }
+  { name: '拼多多首页icon', value: 6 },
+  { name: '聚划算icon', value: 7 }
 ]
 
 export default {
