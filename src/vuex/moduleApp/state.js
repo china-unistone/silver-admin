@@ -22,10 +22,10 @@ const state = {
       title: '首页设置',
       role: 'SUPPER_ADMIN',
       subItems:[
-          {
-              name: 'HomeArticle',
-              title: '首页广告'
-          },
+          // {
+          //     name: 'HomeArticle',
+          //     title: '首页广告'
+          // },
           {
               name: 'AdvType',
               title: '广告位类型'
@@ -134,7 +134,7 @@ const state = {
       }
   ],
   tabs: [],
-  tabComponents: ['Welcome', 'HomeArticle', 'AdvType', 'AdvInfo', 'Area', 'Arealife', 'Areahome', 'Circle', 'Bursting', 'Source', 'School', 'AdminUserList', 'WithdrawList', 'ScenicSpotList', 'ScenicLevel', 'ScenicStrategy',
+  tabComponents: ['Welcome', 'AdvType', 'AdvInfo', 'Area', 'Arealife', 'Areahome', 'Circle', 'Bursting', 'Source', 'School', 'AdminUserList', 'WithdrawList', 'ScenicSpotList', 'ScenicLevel', 'ScenicStrategy',
   'OfficialMsg', 'ActivityMsg']
 }
 
