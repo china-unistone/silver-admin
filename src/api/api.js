@@ -38,7 +38,8 @@ const API = {
     SysMsgPageList: 'sysmsg/pageList',
     SysMsgInsert: 'sysmsg/insert',
     SysMsgUpdate: 'sysmsg/update',
-    SysMsgDelete: 'sysmsg/delete'
+    SysMsgDelete: 'sysmsg/delete',
+    cacheItem: 'http://47.99.200.198:19080/service/edit/cacheItem' // service相关接口
 }
 
 export default API

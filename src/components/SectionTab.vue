@@ -317,6 +317,10 @@ export default {
                     section: _this.sectionIndex
                 }
                 let apiUrl = (data.id) ? API.EditUpdateData : API.EditInsertData;
+                // 将商品基础信息缓存在后台
+                if(data.dailyItemId){
+                    axios.post(API.cacheItem + '?itemId=' + data.dailyItemId);
+                }
                 axios.post(apiUrl, data)
                     .then(function(response) {
                         if (response.status == 0) {
@@ -342,6 +346,8 @@ export default {
                 inputErrorMessage: '淘宝商品itemId格式不正确'
             }).then(({ value }) => {
                 UE.getEditor('editor' + this.sectionIndex).execCommand('insertHtml', '<div class="goodsBox">{#' + value + '#}</div>');
+                // 将商品基础信息缓存在后台
+                axios.post(API.cacheItem + '?itemId=' + value);
             }).catch(() => {});
         },
         removeImgListUpload(file, fileList) {
