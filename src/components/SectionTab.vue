@@ -41,6 +41,16 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
+                <el-form-item v-if="moduleIndex == 2" label="商品类型" prop="platform">
+                    <el-select v-model="form.platform" placeholder="请选择商品类型" style="width: 100%;">
+                      <el-option
+                        v-for="item in platformList"
+                        :key="item.value"
+                        :label="item.name"
+                        :value="item.value">
+                      </el-option>
+                    </el-select>
+                </el-form-item>
                 <el-form-item v-if="moduleIndex == 2" label="ItemId" prop="dailyItemId">
                     <el-input v-model.number="form.dailyItemId"></el-input>
                 </el-form-item>
@@ -70,6 +80,27 @@
                 </el-form-item>
             </el-form>
         </el-row>
+        <el-dialog title="插入商品" :visible.sync="goodsDialogVisible" append-to-body @close="onCloseGoodsDialog">
+          <el-form :model="goodsForm" ref="goodsForm" :rules="goodsFormRules" label-width="120px">
+            <el-form-item label="商品类型" prop="platform">
+              <el-select v-model="goodsForm.platform" placeholder="请选择商品类型" style="width: 100%;">
+                  <el-option
+                    v-for="item in platformList"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item label="商品ItemId" prop="itemId">
+              <el-input v-model.number="goodsForm.itemId" placeholder="请输入商品ItemId"></el-input>
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="goodsDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="onConfirmGoodsDialog">确 定</el-button>
+          </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -105,6 +136,20 @@ export default {
     },
     data() {
         return {
+            platformList: [
+                { name: '淘宝', value: 1 },
+                { name: '京东', value: 2 },
+                { name: '拼多多', value: 3 }
+            ],
+            goodsDialogVisible: false,
+            goodsForm: {
+                platform: null,
+                itemId: null
+            },
+            goodsFormRules: {
+                platform: [{ required: true, message: '请选择商品类型', trigger: 'change' }],
+                itemId: [{ required: true, message: '请输入ItemId', trigger: 'blur' }, { type: 'number', message: 'ItemId必须为数字值' }],
+            },
             uploadData: [{
                 type: "add",
                 result: ""
@@ -124,11 +169,13 @@ export default {
                 content: '',
                 repost: 0,
                 praise: 0,
-                dailyItemId: null
+                platform: 0,
+                dailyItemId: null,
             },
             formRule: {
                 title: [{ required: true, message: '请输入文章标题', trigger: 'blur' }],
                 sort: [{ required: true, message: '请输入排列序号', trigger: 'blur' }, { type: 'number', message: '排列序号必须为数字值' }],
+                platform: [{ required: true, message: '请选择商品类型', trigger: 'change' }],
                 dailyItemId: [{ required: true, message: '请输入ItemId', trigger: 'blur' }, { type: 'number', message: 'ItemId必须为数字值' }],
                 repost: [{ required: true, message: '请输入转发数', trigger: 'blur' }, { type: 'number', message: '转发数必须为数字值' }],
                 praise: [{ required: true, message: '请输入点赞数', trigger: 'blur' }, { type: 'number', message: '点赞数必须为数字值' }],
@@ -236,6 +283,9 @@ export default {
             this.form.content = row.content;
             this.config.initialContent = row.content;
 
+            if(row.platform){
+                this.form.platform = parseInt(row.platform) || 0
+            }
             if(row.dailyItemId){
                 this.form.dailyItemId = parseInt(row.dailyItemId) || 0
             }
@@ -312,6 +362,7 @@ export default {
                     content: content,
                     coverImg: _this.cover_img,
                     promoUrls: _this.parseFileArrToImgStr(_this.imgList),
+                    platform: _this.form.platform,
                     dailyItemId: _this.form.dailyItemId,
                     module: _this.moduleIndex,
                     section: _this.sectionIndex
@@ -319,7 +370,7 @@ export default {
                 let apiUrl = (data.id) ? API.EditUpdateData : API.EditInsertData;
                 // 将商品基础信息缓存在后台
                 if(data.dailyItemId){
-                    axios.post(API.cacheItem + '?itemId=' + data.dailyItemId);
+                    axios.post(API.cacheItem + '?itemId=' + data.dailyItemId + '&platform=' + data.platform);
                 }
                 axios.post(apiUrl, data)
                     .then(function(response) {
@@ -339,16 +390,34 @@ export default {
             this.isList = true
         },
         insertItemid() {
-            this.$prompt('请输入淘宝商品itemId', '', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                inputPattern: /^[0-9]*$/,
-                inputErrorMessage: '淘宝商品itemId格式不正确'
-            }).then(({ value }) => {
-                UE.getEditor('editor' + this.sectionIndex).execCommand('insertHtml', '<div class="goodsBox">{#' + value + '#}</div>');
+            this.goodsForm = {
+                platform: 1,
+                itemId: null
+            }
+            this.goodsDialogVisible = true
+        },
+        onCloseGoodsDialog() {
+            this.$refs['goodsForm'].resetFields()
+        },
+        onConfirmGoodsDialog() {
+            const _this = this
+            _this.$refs['goodsForm'].validate((valid) => {
+                if (!valid) {
+                    return
+                }
+                var itemTemplate = ''
+                if (_this.goodsForm.platform == 1) {
+                    itemTemplate = '{#' + _this.goodsForm.itemId + '#}'
+                } else if (_this.goodsForm.platform == 2) {
+                    itemTemplate = '{$' + _this.goodsForm.itemId + '$}'
+                } else if (_this.goodsForm.platform == 3) {
+                    itemTemplate = '{%' + _this.goodsForm.itemId + '%}'
+                }
+                UE.getEditor('editor' + this.sectionIndex).execCommand('insertHtml', '<div class="goodsBox">' + itemTemplate + '</div>')
                 // 将商品基础信息缓存在后台
-                axios.post(API.cacheItem + '?itemId=' + value);
-            }).catch(() => {});
+                axios.post(API.cacheItem + '?itemId=' + _this.goodsForm.itemId + '&platform=' + _this.goodsForm.platform)
+                _this.goodsDialogVisible = false
+            })
         },
         removeImgListUpload(file, fileList) {
             this.imgList = fileList
