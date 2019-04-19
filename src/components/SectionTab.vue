@@ -63,7 +63,7 @@
                 <el-form-item label="排列顺序" prop="sort">
                     <el-input v-model.number="form.sort"></el-input>
                 </el-form-item>
-                <el-form-item v-if="moduleIndex == 2 || moduleIndex == 3 || moduleIndex == 4" label="转发数" prop="repost">
+                <el-form-item v-if="moduleIndex == 2 || moduleIndex == 3 || moduleIndex == 4" label="浏览量" prop="repost">
                     <el-input v-model.number="form.repost"></el-input>
                 </el-form-item>
                 <el-form-item v-if="moduleIndex == 2 || moduleIndex == 3 || moduleIndex == 4" label="点赞数" prop="praise">
@@ -177,7 +177,7 @@ export default {
                 sort: [{ required: true, message: '请输入排列序号', trigger: 'blur' }, { type: 'number', message: '排列序号必须为数字值' }],
                 platform: [{ required: true, message: '请选择商品类型', trigger: 'change' }],
                 dailyItemId: [{ required: true, message: '请输入ItemId', trigger: 'blur' }, { type: 'number', message: 'ItemId必须为数字值' }],
-                repost: [{ required: true, message: '请输入转发数', trigger: 'blur' }, { type: 'number', message: '转发数必须为数字值' }],
+                repost: [{ required: true, message: '请输入浏览量', trigger: 'blur' }, { type: 'number', message: '浏览量必须为数字值' }],
                 praise: [{ required: true, message: '请输入点赞数', trigger: 'blur' }, { type: 'number', message: '点赞数必须为数字值' }],
             },
             config: {
