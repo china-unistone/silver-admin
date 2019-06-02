@@ -39,7 +39,15 @@ const API = {
     SysMsgInsert: 'sysmsg/insert',
     SysMsgUpdate: 'sysmsg/update',
     SysMsgDelete: 'sysmsg/delete',
-    cacheItem: 'http://47.99.200.198:19080/service/edit/cacheItem' // service相关接口
+    cacheItem: 'http://47.99.200.198:19080/service/edit/cacheItem', // service相关接口
+    /**订单确认发货*/
+    DeliverChargeOrder: 'http://47.99.200.198:19080/service/charge-order-backend/deliverChargeOrder',
+    /**导出VipCard Excel*/
+    ExportVipCard: 'http://47.99.200.198:19080/service/charge-order-backend/exportVipCard',
+    /**获取细银特权订单列表*/
+    GetChargeOrderList: 'http://47.99.200.198:19080/service/charge-order-backend/getChargeOrderList',
+    /**查询订单下的所有卡片信息*/
+    OrderDetail: 'http://47.99.200.198:19080/service/charge-order-backend/orderDetail'
 }
 
 export default API

@@ -131,11 +131,27 @@ const state = {
                   title: '活动公告'
               }
           ]
+      },
+      {
+          name: 'OrderManagement',
+          icon: 'el-icon-tickets',
+          title: '后台订单管理',
+          role: 'SUPPER_ADMIN',
+          subItems:[
+              {
+                  name: 'OrderListVipCard',
+                  title: 'VIP卡订单列表'
+              },
+              {
+                  name: 'OrderListParkCard',
+                  title: '挪车卡订单列表'
+              }
+          ]
       }
   ],
   tabs: [],
   tabComponents: ['Welcome', 'AdvType', 'AdvInfo', 'Area', 'Arealife', 'Areahome', 'Circle', 'Bursting', 'Source', 'School', 'AdminUserList', 'WithdrawList', 'ScenicSpotList', 'ScenicLevel', 'ScenicStrategy',
-  'OfficialMsg', 'ActivityMsg']
+  'OfficialMsg', 'ActivityMsg','OrderListVipCard','OrderListParkCard']
 }
 
 export default state
