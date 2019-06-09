@@ -139,8 +139,12 @@ const state = {
           role: 'SUPPER_ADMIN',
           subItems:[
               {
+                  name: 'OrderListSingleVipCard',
+                  title: '单VIP卡订单列表'
+              },
+              {
                   name: 'OrderListVipCard',
-                  title: 'VIP卡订单列表'
+                  title: '多VIP卡订单列表'
               },
               {
                   name: 'OrderListParkCard',
@@ -151,7 +155,7 @@ const state = {
   ],
   tabs: [],
   tabComponents: ['Welcome', 'AdvType', 'AdvInfo', 'Area', 'Arealife', 'Areahome', 'Circle', 'Bursting', 'Source', 'School', 'AdminUserList', 'WithdrawList', 'ScenicSpotList', 'ScenicLevel', 'ScenicStrategy',
-  'OfficialMsg', 'ActivityMsg','OrderListVipCard','OrderListParkCard']
+  'OfficialMsg', 'ActivityMsg','OrderListSingleVipCard','OrderListVipCard','OrderListParkCard']
 }
 
 export default state

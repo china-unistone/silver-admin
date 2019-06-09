@@ -12,7 +12,7 @@
                 <el-table-column prop="receiverAddress" label="地址" align="center"></el-table-column>
                 <el-table-column fixed="right" label="操作" width="100">
                     <template slot-scope="scope">
-                        <el-button v-if="scope.sectionIndex == 2" @click="deliverChargeOrder(scope.row.orderSn)" type="text" size="small">确认发货</el-button>
+                        <el-button v-if="sectionIndex == 2" @click="deliverChargeOrder(scope.row.orderSn)" type="text" size="small">确认发货</el-button>
                         <el-button @click="exportVipCard(scope.row.orderSn)" type="text" size="small">导出VIP表</el-button>
                         <!--<el-button @click="orderDetail(scope.row.orderSn)" type="text" size="small">查看详情</el-button>-->
                     </template>

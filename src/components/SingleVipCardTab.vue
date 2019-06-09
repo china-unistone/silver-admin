@@ -13,6 +13,7 @@
                 <el-table-column fixed="right" label="操作" width="100">
                     <template slot-scope="scope">
                         <el-button v-if="sectionIndex == 2" @click="deliverChargeOrder(scope.row.orderSn)" type="text" size="small">确认发货</el-button>
+                        <el-button @click="exportVipCard(scope.row.orderSn)" type="text" size="small">导出VIP表</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -27,7 +28,7 @@
     import API from '../api/api.js'
 
     export default {
-        name: "ParkCardTab",
+        name: "SingleVipCardTab",
         components: {
         },
         props: {
@@ -56,20 +57,21 @@
                     params = {
                         pageNum: cp,
                         pageSize: 20,
-                        orderType: 'BATCH_PARK',
+                        orderType: 'VIP',
                         state: this.sectionIndex
                     }
                 } else {
                     params = {
                         pageNum: cp,
                         pageSize: 20,
-                        orderType: 'BATCH_PARK'
+                        orderType: 'VIP'
                     }
                 }
+
                 axios.get(API.GetChargeOrderList, {
                     params: params
                 }).then(res => {
-                    console.log('===挪车订单列表===', JSON.stringify(res));
+                    console.log('===VIP订单列表===', JSON.stringify(res));
 
                     this.tableData = res.data.list
                     this.totalPage = res.data.totalPage
@@ -102,10 +104,35 @@
                     }).catch(() => {
                         this.$message.error('服务器异常！')
                     });
-
                 }).catch(() => {
                     // 取消操作
                 })
+            },
+            exportVipCard(orderSn) {
+                const elink = document.createElement('a')
+                elink.style.display = 'none'
+                elink.href = API.ExportVipCard + '?orderSn=' + orderSn
+                document.body.appendChild(elink)
+                elink.click()
+                URL.revokeObjectURL(elink.href) // 释放URL 对象
+                document.body.removeChild(elink)
+            },
+            orderDetail(orderSn) {
+                axios.post(API.OrderDetail, {
+                    orderSn: orderSn
+                }, {
+                    transformRequest: [function (data) {
+                        let ret = ''
+                        for (let it in data) {
+                            ret += encodeURIComponent(it) + '=' + encodeURIComponent(data[it]) + '&'
+                        }
+                        return ret
+                    }]
+                }).then((res) => {
+                    console.log('===详情===', JSON.stringify(res));
+                }).catch(() => {
+                    this.$message.error('服务器异常！')
+                });
             }
         }
     };
