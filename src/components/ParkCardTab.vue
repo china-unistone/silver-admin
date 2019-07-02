@@ -13,6 +13,7 @@
                 <el-table-column fixed="right" label="操作" width="100">
                     <template slot-scope="scope">
                         <el-button v-if="sectionIndex == 2" @click="deliverChargeOrder(scope.row.orderSn)" type="text" size="small">确认发货</el-button>
+                        <el-button @click="exportParkCard(scope.row.orderSn)" type="text" size="small">导出挪车卡表</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -106,7 +107,16 @@
                 }).catch(() => {
                     // 取消操作
                 })
-            }
+            },
+            exportParkCard(orderSn) {
+                const elink = document.createElement('a')
+                elink.style.display = 'none'
+                elink.href = API.ExportParkCard + '?orderSn=' + orderSn
+                document.body.appendChild(elink)
+                elink.click()
+                URL.revokeObjectURL(elink.href) // 释放URL 对象
+                document.body.removeChild(elink)
+            },
         }
     };
 </script>

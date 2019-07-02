@@ -44,6 +44,8 @@ const API = {
     DeliverChargeOrder: 'http://47.99.200.198:19080/service/charge-order-backend/deliverChargeOrder',
     /**导出VipCard Excel*/
     ExportVipCard: 'http://47.99.200.198:19080/service/charge-order-backend/exportVipCard',
+    /**导出挪车卡列表Excel*/
+    ExportParkCard: 'http://47.99.200.198:19080/service/charge-order-backend/exportParkCard',
     /**获取细银特权订单列表*/
     GetChargeOrderList: 'http://47.99.200.198:19080/service/charge-order-backend/getChargeOrderList',
     /**查询订单下的所有卡片信息*/
