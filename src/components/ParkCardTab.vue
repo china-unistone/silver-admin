@@ -13,7 +13,7 @@
                 <el-table-column fixed="right" label="操作" width="100">
                     <template slot-scope="scope">
                         <el-button v-if="sectionIndex == 2" @click="deliverChargeOrder(scope.row.orderSn)" type="text" size="small">确认发货</el-button>
-                        <el-button @click="exportParkCard(scope.row.orderSn)" type="text" size="small">导出挪车卡表</el-button>
+                        <el-button v-if="scope.row.orderState == 2" @click="exportParkCard(scope.row.orderSn)" type="text" size="small">导出挪车卡表</el-button>
                     </template>
                 </el-table-column>
             </el-table>

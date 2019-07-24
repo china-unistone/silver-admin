@@ -12,7 +12,7 @@ axios.defaults.timeout = 30000
 axios.defaults.baseURL = '/admin'
 
 axios.defaults.responseType = 'json'
-axios.defaults.withCredentials=true
+axios.defaults.withCredentials=false
 
 let loadingInstance = null;
 
