@@ -3,7 +3,6 @@
         <el-row v-if="isList">
             <el-table :data="tableData" border style="width: 100%">
                 <el-table-column prop="orderSn" label="订单号"></el-table-column>
-                <el-table-column prop="privType" label="套餐"></el-table-column>
                 <el-table-column prop="receiver" label="姓名"></el-table-column>
                 <el-table-column prop="receiverPhone" label="电话"></el-table-column>
                 <el-table-column prop="gmtModified" label="时间"></el-table-column>
